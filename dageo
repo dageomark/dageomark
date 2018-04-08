@@ -1,1 +1,35 @@
 time series script in r
+?arima.sim
+modele1 <- list(ar=0.1)##### ar(1)
+modele2 <- list(ar=c(0.1,0.2))##### ar(2)
+x1 <- arima.sim(modele1,100)
+x2 <- arima.sim(modele2,100)
+acf1 <- acf(x1)
+pcf1 <- pacf(x2,col=2,lwd=1)
+model1 <- list(ma=0.1) ##### ma(1)        
+x11 <- arima.sim(model1,100)
+acf(x11)
+
+pacf(x11)
+model2 <- list(ma=c(0.5,0.3))#### ma(2)
+x22 <- arima.sim(model2,100)
+acf(x22,col=2,lwd=2)
+######arima(p,d,q)
+modelearima <- list(ar=c(0.2,0.4,0.3),ma=c(0.5,0.2),order=c(3,2,2))
+y <- arima.sim(modelearima,100)
+plot(y)
+plot(diff(y,lag=1,differences = 3))######differencier pour enlever la tendance
+acf(y)
+pacf(y)
+mod1 <- arima(y,order=c(5,3,5))
+mod1$aic
+mod2 <- arima(y,order=c(5,3,4))
+mod2$aic
+mod3 <- arima(y,order=c(4,3,4))
+mod3$aic
+mod1 <- arima(y,order=c(5,3,5))
+mod4 <- arima(y,order=c(3,3,2))
+mod4$aic###### le modele a retenir est celui qui le faible aic
+Box.test(mod4$residuals,lag=1)
+plot(mod4$residuals)
+acf(mod4$residuals)
